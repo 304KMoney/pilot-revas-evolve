@@ -3,8 +3,9 @@
   "routing_authority": "PHI_ACCESS_001",
   "routing_reason": "Entity is an AI-generated candidate state affecting PHI. Patient is flagged sensitive_category=true (mental health). Single-clinician authorization is not sufficient. Route to dual authorization queue.",
   "observation_vs_interpretation": {
-    "observation": "AI model produced output hash b4g2d0f3... at 12:00:00Z",
-    "interpretation": "Output represents a medication change recommendation",
+    "observation": "AI model produced output hash sha256:b4f2d0a3c8e55192f1d7e6b4d9c3a2b0e5f8d4c1a7d0b3f6c9e2a5d8b1c4e7a0 at 2026-09-17T12:00:00Z",
+    "_observation_note": "Updated from SOURCE-02 (REVAS Pilot 1 audit): stale placeholder hash b4g2d0f3... containing non-hex character replaced with the valid synthetic SHA-256 digest used in case.json and artifact.json. Marked synthetic.",
+    "interpretation": "Output represents a medication change recommendation — sertraline dosage increase",
     "inference": "Medication change will affect PHI if adopted into EHR",
     "authority_to_interpret": "AI_CDS_system — authorized to generate candidate states only, not to adopt them"
   },

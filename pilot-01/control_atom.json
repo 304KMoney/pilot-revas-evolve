@@ -1,6 +1,7 @@
 {
   "control_id": "PHI_ACCESS_001",
-  "version": "1.0.0",
+  "version": "1.1.0",
+  "_version_note": "v1.1.0 resolves SOURCE-01 from REVAS Pilot 1 audit: HOLD/REJECT distinction now self-contained in the canonical atom. condition_for_rejection now explicitly encodes the terminal predicate so no external email clarification is required to distinguish pending-incomplete from terminally-incomplete.",
   "domain": "healthcare",
   "framework_mappings": [
     { "framework": "HIPAA", "reference": "§164.312(a)(1)", "requirement": "Unique user identification and access control for PHI systems" },
@@ -24,7 +25,12 @@
       "default": "HOLD — recommendation is a candidate state until authorization is complete",
       "condition_for_adoption": "All authority_requirements and evidence_requirements satisfied",
       "condition_for_escalation": "Dual authorization required if sensitive_category == true",
-      "condition_for_rejection": "Reject and quarantine if authority cannot be confirmed or evidence is incomplete"
+      "hold_reject_semantics": {
+        "HOLD": "Conditions are temporarily incomplete and still satisfiable. The authorization window is open. The candidate state is preserved. Downstream propagation is blocked. HOLD applies when required actors have not yet been asked or have not yet responded, when the authorization window has not expired, and when authority has not been invalidated.",
+        "REJECT": "Conditions are terminally incomplete or authority is invalid. REJECT applies when: (a) a required actor's authority cannot be confirmed or has been revoked; (b) evidence is permanently unresolvable (e.g., required provenance data was never recorded and cannot be reconstructed); or (c) the authorization window has expired without completion. Reject and quarantine the candidate state."
+      },
+      "condition_for_rejection": "Reject and quarantine if: (a) authority cannot be confirmed or has been revoked (terminal, not merely pending); or (b) evidence is permanently unresolvable and cannot be reconstructed; or (c) the authorization window has expired. Pending-incomplete conditions where required actors have not yet responded are HOLD, not REJECT.",
+      "hold_reject_precedence": "When conditions are incomplete, apply HOLD if the incompleteness is remediable and the authorization window is open. Apply REJECT only when the incompleteness is terminal or authority is invalid. HOLD takes precedence over the literal rejection clause for remediable conditions."
     },
     "provenance": {
       "candidate_state_must_be_preserved": true,

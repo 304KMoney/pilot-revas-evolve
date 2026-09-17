@@ -25,8 +25,26 @@
   },
   "conflicting_representations_detected": false,
   "state_lineage": [
-    { "state": "candidate", "source": "AI_CDS_system", "timestamp": "2026-09-17T12:00:00Z", "provenance_hash": "sha256:a3f1c9e2b7d44081f0c6e5a3d8b2c1f9e4a7d3b1c8e5f2a9d6b3c0e7f4a1d8b5" },
-    { "state": "submitted_for_authorization", "source": "authorization_service", "timestamp": "2026-09-17T12:00:04Z", "provenance_hash": null },
-    { "state": "pending_dual_authorization", "source": "authorization_service", "timestamp": "2026-09-17T12:00:05Z", "trigger": "PHI_ACCESS_001.sensitive_category_check (organizational_policy)", "provenance_hash": null }
+    {
+      "state": "candidate",
+      "source": "AI_CDS_system",
+      "timestamp": "2026-09-17T12:00:00Z",
+      "provenance_hash": "sha256:a3f1c9e2b7d44081f0c6e5a3d8b2c1f9e4a7d3b1c8e5f2a9d6b3c0e7f4a1d8b5",
+      "provenance_hash_role": "input_hash",
+      "_provenance_hash_note": "SOURCE-03 resolution (REVAS Pilot 1 audit): hash role now explicitly typed. This is the input_hash — the hash of the data the AI model received as input. It is distinct from the output_hash (sha256:b4f2d0a3c8e55192f1d7e6b4d9c3a2b0e5f8d4c1a7d0b3f6c9e2a5d8b1c4e7a0) recorded in case.json and artifact.json. Both hashes are synthetic."
+    },
+    {
+      "state": "submitted_for_authorization",
+      "source": "authorization_service",
+      "timestamp": "2026-09-17T12:00:04Z",
+      "provenance_hash": null
+    },
+    {
+      "state": "pending_dual_authorization",
+      "source": "authorization_service",
+      "timestamp": "2026-09-17T12:00:05Z",
+      "trigger": "PHI_ACCESS_001.sensitive_category_check (organizational_policy)",
+      "provenance_hash": null
+    }
   ]
 }
