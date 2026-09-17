@@ -1,18 +1,26 @@
 {
+  "_note": "Adoption Gate owns the adoption decision. Verify establishes the supported verification state; Gate decides what to do with it.",
   "gate_decision": "HOLD",
   "gate_authority": "PHI_ACCESS_001",
-  "gate_reason": "Dual authorization not complete. Candidate state must not propagate to EHR until both authority_requirements and evidence_requirements are satisfied.",
+  "gate_reason": "Required authority set is not complete (primary verified, secondary pending). Conditions are temporarily incomplete and still satisfiable — this is HOLD, not REJECT.",
+  "hold_vs_reject_semantics": {
+    "HOLD": "Conditions temporarily incomplete / still satisfiable. Authorization window is open. Candidate state preserved. Downstream propagation blocked until conditions are met.",
+    "REJECT": "Authority cannot be confirmed, is invalid, or evidence is terminally incomplete. Candidate state quarantined. Adoption permanently blocked for this candidate."
+  },
+  "current_decision": "HOLD",
+  "current_decision_reason": "secondary_authority_verified is false but still satisfiable — authorization window is open and secondary clinician has not yet been asked or declined",
   "downstream_propagation": false,
   "candidate_state_preserved": true,
   "adopted_state": null,
-  "conditions_for_gate_release": [
-    "secondary_authority_confirmed == true",
+  "conditions_for_gate_release_to_adopt": [
+    "secondary_authority_verified == true",
     "authorization_event_logged == true",
     "audit_trail_complete == true"
   ],
-  "conditions_for_rejection": [
-    "Either clinician's authority cannot be confirmed within the authorization window",
-    "Evidence of minimum necessary standard is found to be incomplete after submission"
+  "conditions_for_gate_escalation_to_reject": [
+    "Either clinician authority is found invalid or revoked",
+    "Authorization window expires without secondary authorization",
+    "Evidence of minimum necessary standard found to be permanently incomplete"
   ],
-  "rollback_trigger": "If either authorization is later found invalid, adopted state (if it proceeds) must be flagged and all downstream EHR states derived from this recommendation must be reopened for reverification."
+  "rollback_trigger": "If either authorization is later invalidated: flag adopted state, notify EHR_platform, queue all downstream states derived from this recommendation for reverification. Preserve candidate state and full lineage for audit."
 }

@@ -5,23 +5,27 @@
   "systems_involved": ["AI_CDS_system", "EHR_platform", "authorization_service", "audit_log", "TrustLedger"],
   "patient_flags": {
     "sensitive_category": true,
-    "reason": "Mental health diagnosis present in record"
+    "reason": "Mental health diagnosis present in record",
+    "policy_source": "organizational_policy",
+    "_note": "The dual-authorization requirement for sensitive_category is an Evolve / organizational policy interpretation applied on top of HIPAA framework requirements. HIPAA §164.312(a)(1) requires unique user identification and access control — it does not prescribe dual authorization explicitly. The dual-authorization rule is a local operational policy the organization has adopted to satisfy the minimum necessary standard for sensitive categories. Kept distinct from framework requirements in this case file."
   },
   "ai_output": {
     "type": "medication_change_recommendation",
     "model_version": "cds-llm-v2.3.1",
     "input_hash": "sha256:a3f1c9e2b7d44081f0c6e5a3d8b2c1f9e4a7d3b1c8e5f2a9d6b3c0e7f4a1d8b5",
-    "output_hash": "sha256:b4g2d0f3c8e55192g1d7f6b4e9c3d2g0f5b8e4c1g7d0f3b6c9e2g5f8b1c4e7g0",
+    "output_hash": "sha256:b4f2d0a3c8e55192f1d7e6b4d9c3a2b0e5f8d4c1a7d0b3f6c9e2a5d8b1c4e7a0",
+    "_note_output_hash": "Valid synthetic SHA-256 hex digest (64 hex chars, no non-hex characters). Marked as synthetic — not a real model output.",
     "recommendation": "Increase sertraline dosage from 50mg to 100mg daily",
     "generated_at": "2026-09-17T12:00:00Z",
-    "current_state": "candidate"
+    "state_at_generation": "candidate",
+    "_state_boundary_note": "candidate is the state at request creation time (12:00:00Z). The evaluation state at 12:00:05Z is pending_dual_authorization. These are distinct timestamped state transitions — see state_transitions below."
   },
   "state_transitions": [
-    { "state": "generated", "timestamp": "2026-09-17T12:00:00Z", "system": "AI_CDS_system" },
-    { "state": "submitted_for_authorization", "timestamp": "2026-09-17T12:00:05Z", "system": "authorization_service" },
-    { "state": "pending_dual_authorization", "timestamp": "2026-09-17T12:00:05Z", "system": "authorization_service", "trigger": "sensitive_category == true" }
+    { "state": "candidate", "timestamp": "2026-09-17T12:00:00Z", "system": "AI_CDS_system", "description": "Model output produced — not yet submitted for authorization" },
+    { "state": "submitted_for_authorization", "timestamp": "2026-09-17T12:00:04Z", "system": "authorization_service", "description": "Candidate submitted for authorization review" },
+    { "state": "pending_dual_authorization", "timestamp": "2026-09-17T12:00:05Z", "system": "authorization_service", "trigger": "sensitive_category == true (organizational policy)", "description": "Dual authorization required — routing to secondary clinician queue" }
   ],
   "current_state": "pending_dual_authorization",
-  "adopted_state": null,
-  "notes": "Dual authorization required because patient has a mental health diagnosis (sensitive category). Single-clinician approval is not sufficient under PHI_ACCESS_001."
+  "current_state_timestamp": "2026-09-17T12:00:05Z",
+  "adopted_state": null
 }

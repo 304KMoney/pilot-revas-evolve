@@ -3,13 +3,19 @@
   "object_id": "pilot-01-synthetic-001",
   "current_state": "pending_dual_authorization",
   "adopted_state": null,
-  "authority_status": {
-    "primary_clinician_authorized": true,
-    "secondary_clinician_authorized": false,
-    "dual_authorization_complete": false,
-    "authority_source": "EHR access control list — verified against patient record"
+  "authority_state": {
+    "_note": "Authority state preserved at individual check level — not collapsed into a single boolean.",
+    "primary_authority_verified": true,
+    "primary_authority_source": "EHR access control list — verified against patient record",
+    "secondary_authority_verified": false,
+    "secondary_authority_source": null,
+    "required_authority_set_complete": false,
+    "dual_authorization_required": true,
+    "dual_authorization_required_source": "organizational_policy — sensitive_category == true (mental health diagnosis)",
+    "authorization_window_open": true,
+    "authorization_window_expired": false
   },
-  "evidence_status": {
+  "evidence_state": {
     "minimum_necessary_logged": true,
     "model_version_recorded": true,
     "input_hash_recorded": true,
@@ -19,8 +25,8 @@
   },
   "conflicting_representations_detected": false,
   "state_lineage": [
-    { "state": "generated", "source": "AI_CDS_system", "timestamp": "2026-09-17T12:00:00Z", "provenance_hash": "sha256:a3f1c9..." },
-    { "state": "submitted_for_authorization", "source": "authorization_service", "timestamp": "2026-09-17T12:00:05Z" },
-    { "state": "pending_dual_authorization", "source": "authorization_service", "timestamp": "2026-09-17T12:00:05Z", "trigger": "PHI_ACCESS_001.sensitive_category_check" }
+    { "state": "candidate", "source": "AI_CDS_system", "timestamp": "2026-09-17T12:00:00Z", "provenance_hash": "sha256:a3f1c9e2b7d44081f0c6e5a3d8b2c1f9e4a7d3b1c8e5f2a9d6b3c0e7f4a1d8b5" },
+    { "state": "submitted_for_authorization", "source": "authorization_service", "timestamp": "2026-09-17T12:00:04Z", "provenance_hash": null },
+    { "state": "pending_dual_authorization", "source": "authorization_service", "timestamp": "2026-09-17T12:00:05Z", "trigger": "PHI_ACCESS_001.sensitive_category_check (organizational_policy)", "provenance_hash": null }
   ]
 }

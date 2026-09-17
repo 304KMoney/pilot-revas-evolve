@@ -1,8 +1,11 @@
 {
+  "_role": "Evolve proposed adapter representation — NOT canonical REVAS input. REVAS should independently ingest control_atom.json + live_state.json as the canonical Evolve-side source and produce revas_representation.json independently. This file represents Evolve's proposed mapping and should be compared against the independent REVAS representation to identify semantic drift at the translation boundary.",
   "request": {
     "domain": "healthcare_phi",
     "action": "classify_route_verify",
-    "current_state": "candidate",
+    "state_at_request_creation": "candidate",
+    "state_at_evaluation": "pending_dual_authorization",
+    "_state_boundary_note": "candidate is the state when the request object was created (12:00:00Z). pending_dual_authorization is the evaluation state at 12:00:05Z. These are distinct — see case.json state_transitions.",
     "control_atom_ref": "PHI_ACCESS_001",
     "control_atom_version": "1.0.0"
   },
@@ -11,22 +14,26 @@
     "systems_involved": ["AI_CDS_system", "EHR_platform", "authorization_service", "audit_log", "TrustLedger"],
     "action_type": "phi_adoption",
     "sensitive_category": true,
+    "sensitive_category_source": "organizational_policy",
     "ai_generated": true
   },
   "verification_state": {
-    "evidence_complete": false,
-    "authority_boundary_confirmed": false,
-    "dual_authorization_satisfied": false,
+    "_note": "Authority state is preserved at the individual check level — not collapsed into a single boolean.",
+    "primary_authority_verified": true,
+    "secondary_authority_verified": false,
+    "required_authority_set_complete": false,
     "minimum_necessary_logged": true,
     "model_provenance_recorded": true,
-    "current_state_verified": false
+    "authorization_event_logged": false,
+    "audit_trail_complete": false
   },
   "expected_behavior": {
     "route": "dual_authorization_required",
-    "verify": "resolve_authority_and_evidence_for_sensitive_phi_adoption",
+    "verify": "incomplete — primary authority verified, secondary pending, authorization event not yet logged",
     "adoption_gate": "HOLD",
+    "_hold_semantics": "Temporarily incomplete / still satisfiable. Not REJECT — authority window is open and conditions can still be met.",
     "downstream_propagation": false,
-    "reason": "sensitive_category == true triggers dual authorization requirement under PHI_ACCESS_001; single-clinician authority not sufficient"
+    "reason": "sensitive_category == true triggers dual authorization requirement under organizational policy built on PHI_ACCESS_001 control atom"
   },
   "artifact": {
     "candidate_state_preserved": true,

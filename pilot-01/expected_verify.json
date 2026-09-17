@@ -1,16 +1,22 @@
 {
+  "_note": "Verify establishes the supported verification state only — it does not own the adoption decision. HOLD language is intentionally absent here. The Adoption Gate owns the adoption decision.",
   "verification_result": "incomplete",
   "checks": [
     { "check": "minimum_necessary_logged", "result": "pass", "source": "audit_log" },
     { "check": "model_provenance_recorded", "result": "pass", "source": "AI_CDS_system" },
-    { "check": "primary_authority_confirmed", "result": "pass", "source": "EHR access control list" },
-    { "check": "secondary_authority_confirmed", "result": "fail", "reason": "Secondary clinician authorization not yet received" },
-    { "check": "authorization_event_logged", "result": "fail", "reason": "Authorization not yet complete — cannot log" },
-    { "check": "audit_trail_complete", "result": "fail", "reason": "Depends on authorization_event_logged" }
+    { "check": "primary_authority_verified", "result": "pass", "source": "EHR access control list", "note": "Primary clinician authority confirmed — this is a known positive state, not collapsed into overall false" },
+    { "check": "secondary_authority_verified", "result": "fail", "reason": "Secondary clinician authorization not yet received — still satisfiable, not invalid" },
+    { "check": "authorization_event_logged", "result": "fail", "reason": "Blocked on secondary_authority_verified — cannot log until authorization is complete" },
+    { "check": "audit_trail_complete", "result": "fail", "reason": "Blocked on authorization_event_logged" }
   ],
   "blocking_gaps": [
-    "secondary_authority_confirmed — dual authorization not complete",
+    "secondary_authority_verified — dual authorization not yet complete (still satisfiable)",
     "authorization_event_logged — blocked on secondary authorization"
   ],
-  "verification_state": "HOLD — cannot proceed to adoption gate until dual authorization complete"
+  "verification_state": "incomplete",
+  "authority_state": {
+    "primary_authority_verified": true,
+    "secondary_authority_verified": false,
+    "required_authority_set_complete": false
+  }
 }
