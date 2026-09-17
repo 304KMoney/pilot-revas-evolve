@@ -1,0 +1,18 @@
+{
+  "gate_decision": "HOLD",
+  "gate_authority": "PHI_ACCESS_001",
+  "gate_reason": "Dual authorization not complete. Candidate state must not propagate to EHR until both authority_requirements and evidence_requirements are satisfied.",
+  "downstream_propagation": false,
+  "candidate_state_preserved": true,
+  "adopted_state": null,
+  "conditions_for_gate_release": [
+    "secondary_authority_confirmed == true",
+    "authorization_event_logged == true",
+    "audit_trail_complete == true"
+  ],
+  "conditions_for_rejection": [
+    "Either clinician's authority cannot be confirmed within the authorization window",
+    "Evidence of minimum necessary standard is found to be incomplete after submission"
+  ],
+  "rollback_trigger": "If either authorization is later found invalid, adopted state (if it proceeds) must be flagged and all downstream EHR states derived from this recommendation must be reopened for reverification."
+}

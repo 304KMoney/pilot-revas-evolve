@@ -1,0 +1,40 @@
+{
+  "request": {
+    "domain": "healthcare_phi",
+    "action": "classify_route_verify",
+    "current_state": "candidate",
+    "control_atom_ref": "PHI_ACCESS_001",
+    "control_atom_version": "1.0.0"
+  },
+  "route_inputs": {
+    "entity_type": "clinical_recommendation",
+    "systems_involved": ["AI_CDS_system", "EHR_platform", "authorization_service", "audit_log", "TrustLedger"],
+    "action_type": "phi_adoption",
+    "sensitive_category": true,
+    "ai_generated": true
+  },
+  "verification_state": {
+    "evidence_complete": false,
+    "authority_boundary_confirmed": false,
+    "dual_authorization_satisfied": false,
+    "minimum_necessary_logged": true,
+    "model_provenance_recorded": true,
+    "current_state_verified": false
+  },
+  "expected_behavior": {
+    "route": "dual_authorization_required",
+    "verify": "resolve_authority_and_evidence_for_sensitive_phi_adoption",
+    "adoption_gate": "HOLD",
+    "downstream_propagation": false,
+    "reason": "sensitive_category == true triggers dual authorization requirement under PHI_ACCESS_001; single-clinician authority not sufficient"
+  },
+  "artifact": {
+    "candidate_state_preserved": true,
+    "adopted_state": null,
+    "provenance_required": true,
+    "authority_required": true,
+    "state_lineage_required": true,
+    "receipt_format": "TrustLedger SHA-256 anchored receipt on adoption",
+    "rollback_scope": "All downstream EHR states derived from this recommendation must be reverified if authorization is invalidated"
+  }
+}

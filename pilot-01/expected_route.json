@@ -1,0 +1,16 @@
+{
+  "route_decision": "dual_authorization_required",
+  "routing_authority": "PHI_ACCESS_001",
+  "routing_reason": "Entity is an AI-generated candidate state affecting PHI. Patient is flagged sensitive_category=true (mental health). Single-clinician authorization is not sufficient. Route to dual authorization queue.",
+  "observation_vs_interpretation": {
+    "observation": "AI model produced output hash b4g2d0f3... at 12:00:00Z",
+    "interpretation": "Output represents a medication change recommendation",
+    "inference": "Medication change will affect PHI if adopted into EHR",
+    "authority_to_interpret": "AI_CDS_system — authorized to generate candidate states only, not to adopt them"
+  },
+  "routing_constraints_from_control_atom": [
+    "AI output must not be adopted without human authorization",
+    "Sensitive category patient requires dual authorization",
+    "Minimum necessary standard must be logged before authorization is requested"
+  ]
+}

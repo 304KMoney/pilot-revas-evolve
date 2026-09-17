@@ -1,0 +1,26 @@
+{
+  "evaluation_timestamp": "2026-09-17T12:00:05Z",
+  "object_id": "pilot-01-synthetic-001",
+  "current_state": "pending_dual_authorization",
+  "adopted_state": null,
+  "authority_status": {
+    "primary_clinician_authorized": true,
+    "secondary_clinician_authorized": false,
+    "dual_authorization_complete": false,
+    "authority_source": "EHR access control list — verified against patient record"
+  },
+  "evidence_status": {
+    "minimum_necessary_logged": true,
+    "model_version_recorded": true,
+    "input_hash_recorded": true,
+    "output_hash_recorded": true,
+    "authorization_event_logged": false,
+    "audit_trail_complete": false
+  },
+  "conflicting_representations_detected": false,
+  "state_lineage": [
+    { "state": "generated", "source": "AI_CDS_system", "timestamp": "2026-09-17T12:00:00Z", "provenance_hash": "sha256:a3f1c9..." },
+    { "state": "submitted_for_authorization", "source": "authorization_service", "timestamp": "2026-09-17T12:00:05Z" },
+    { "state": "pending_dual_authorization", "source": "authorization_service", "timestamp": "2026-09-17T12:00:05Z", "trigger": "PHI_ACCESS_001.sensitive_category_check" }
+  ]
+}

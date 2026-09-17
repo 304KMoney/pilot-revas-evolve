@@ -1,0 +1,16 @@
+{
+  "verification_result": "incomplete",
+  "checks": [
+    { "check": "minimum_necessary_logged", "result": "pass", "source": "audit_log" },
+    { "check": "model_provenance_recorded", "result": "pass", "source": "AI_CDS_system" },
+    { "check": "primary_authority_confirmed", "result": "pass", "source": "EHR access control list" },
+    { "check": "secondary_authority_confirmed", "result": "fail", "reason": "Secondary clinician authorization not yet received" },
+    { "check": "authorization_event_logged", "result": "fail", "reason": "Authorization not yet complete — cannot log" },
+    { "check": "audit_trail_complete", "result": "fail", "reason": "Depends on authorization_event_logged" }
+  ],
+  "blocking_gaps": [
+    "secondary_authority_confirmed — dual authorization not complete",
+    "authorization_event_logged — blocked on secondary authorization"
+  ],
+  "verification_state": "HOLD — cannot proceed to adoption gate until dual authorization complete"
+}

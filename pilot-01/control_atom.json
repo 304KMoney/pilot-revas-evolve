@@ -1,0 +1,44 @@
+{
+  "control_id": "PHI_ACCESS_001",
+  "version": "1.0.0",
+  "domain": "healthcare",
+  "framework_mappings": [
+    { "framework": "HIPAA", "reference": "§164.312(a)(1)", "requirement": "Unique user identification and access control for PHI systems" },
+    { "framework": "NIST_AI_RMF", "reference": "GOVERN-1.1", "requirement": "Policies for AI risk management established and communicated" },
+    { "framework": "ISO_42001", "reference": "6.1.2", "requirement": "AI risk assessment — identify risks to individuals from AI system outputs" }
+  ],
+  "constraint": {
+    "description": "AI-generated recommendations affecting PHI must not be adopted into the health record without explicit human authorization from a credentialed clinician with documented authority over the patient record.",
+    "scope": "Any AI system output that would result in creation, modification, or deletion of protected health information in an EHR.",
+    "authority_requirements": [
+      "Approving actor must hold a valid clinical credential recognized by the organization",
+      "Approving actor must have documented access authority for the specific patient record",
+      "Dual authorization required if patient is flagged as sensitive category (mental health, substance abuse, HIV/AIDS)"
+    ],
+    "evidence_requirements": [
+      "Minimum necessary standard must be satisfied — AI system must log which PHI fields were accessed to generate the recommendation",
+      "Model version, input hash, and output hash must be recorded before authorization is requested",
+      "Authorization event must be logged with actor identity, timestamp, and reason code"
+    ],
+    "adoption_gate": {
+      "default": "HOLD — recommendation is a candidate state until authorization is complete",
+      "condition_for_adoption": "All authority_requirements and evidence_requirements satisfied",
+      "condition_for_escalation": "Dual authorization required if sensitive_category == true",
+      "condition_for_rejection": "Reject and quarantine if authority cannot be confirmed or evidence is incomplete"
+    },
+    "provenance": {
+      "candidate_state_must_be_preserved": true,
+      "adopted_state_requires_receipt": true,
+      "receipt_format": "TrustLedger — SHA-256 hash of adopted state, anchored to external timestamp, linked to authorization event",
+      "rollback_trigger": "If authorization is later found to be unauthorized, all downstream adopted states derived from this recommendation must be flagged for reverification"
+    }
+  },
+  "posture_score_weight": 0.18,
+  "severity": "critical",
+  "attestation_metadata": {
+    "last_attested": null,
+    "attested_by": null,
+    "evidence_file_ids": [],
+    "posture_contribution": "18% of overall AI governance posture score for healthcare domain"
+  }
+}

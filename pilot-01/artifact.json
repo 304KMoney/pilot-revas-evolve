@@ -1,0 +1,32 @@
+{
+  "artifact_status": "candidate_only",
+  "candidate_state": {
+    "preserved": true,
+    "hash": "sha256:b4g2d0f3c8e55192g1d7f6b4e9c3d2g0f5b8e4c1g7d0f3b6c9e2g5f8b1c4e7g0",
+    "generated_at": "2026-09-17T12:00:00Z",
+    "provenance": {
+      "model_version": "cds-llm-v2.3.1",
+      "input_hash": "sha256:a3f1c9e2b7d44081f0c6e5a3d8b2c1f9e4a7d3b1c8e5f2a9d6b3c0e7f4a1d8b5",
+      "output_hash": "sha256:b4g2d0f3c8e55192g1d7f6b4e9c3d2g0f5b8e4c1g7d0f3b6c9e2g5f8b1c4e7g0"
+    }
+  },
+  "adopted_state": null,
+  "trustledger_receipt": null,
+  "receipt_pending_conditions": [
+    "dual_authorization_complete",
+    "authorization_event_logged"
+  ],
+  "receipt_format_on_adoption": {
+    "type": "TrustLedger",
+    "fields": [
+      "adopted_state_hash",
+      "authorization_actor_ids",
+      "authorization_timestamps",
+      "control_atom_ref",
+      "external_timestamp_anchor"
+    ],
+    "anchor": "SHA-256 hash of adopted state, anchored to external timestamp service at adoption time"
+  },
+  "state_lineage_required": true,
+  "rollback_scope": "If either authorization is invalidated: flag adopted_state, notify EHR_platform, queue downstream states for reverification, preserve candidate_state and lineage for audit."
+}
