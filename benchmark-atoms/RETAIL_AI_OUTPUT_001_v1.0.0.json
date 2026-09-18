@@ -1,0 +1,67 @@
+{
+  "control_id": "RETAIL_AI_OUTPUT_001",
+  "version": "1.0.0",
+  "domain": "retail",
+  "framework_mappings": [
+    {
+      "framework": "NIST_AI_RMF",
+      "reference": "GOVERN-1.1",
+      "requirement": "Policies for AI risk management established and communicated"
+    },
+    {
+      "framework": "NIST_AI_RMF",
+      "reference": "MANAGE-2.2",
+      "requirement": "Mechanisms to sustain deployed AI system oversight are in place"
+    },
+    {
+      "framework": "ISO_42001",
+      "reference": "6.1.2",
+      "requirement": "AI risk assessment — identify risks to individuals from AI system outputs"
+    },
+    {
+      "framework": "FTC_ACT",
+      "reference": "Section 5",
+      "requirement": "Unfair or deceptive acts or practices — AI-generated product/pricing recommendations must not mislead consumers"
+    }
+  ],
+  "constraint": {
+    "description": "AI-generated outputs that affect customer-facing decisions (pricing, order modification, returns, account actions, personalized recommendations) must not be executed without human review authorization when the action exceeds defined risk thresholds or affects a flagged account.",
+    "scope": "Any AI agent output in a retail domain that would result in: order modification or cancellation, pricing override, return/refund authorization, account suspension or restriction, or personalized recommendation affecting a purchase decision above a defined monetary threshold.",
+    "authority_requirements": [
+      "Authorizing actor must hold a verified agent-level authorization for the affected account type",
+      "High-value actions (above monetary threshold defined per deployment) require supervisor-level authorization",
+      "Actions affecting flagged accounts (fraud risk, dispute history, VIP) require dual authorization"
+    ],
+    "evidence_requirements": [
+      "AI model version and output hash must be recorded before authorization is requested",
+      "The specific policy rule or knowledge base entry consulted by the agent must be logged",
+      "Authorization event must be logged with actor identity, action taken, timestamp, and reason code",
+      "Customer-facing output must be traceable to the authorized agent action — no silent divergence"
+    ],
+    "adoption_gate": {
+      "default": "HOLD — AI-generated action is a candidate state until authorization is complete",
+      "condition_for_adoption": "All authority_requirements and evidence_requirements satisfied; action is within the authorized actor's scope",
+      "condition_for_escalation": "High-value or flagged-account actions require elevated authorization tier",
+      "hold_reject_semantics": {
+        "HOLD": "Authorization is pending but remediable. The candidate action is preserved. No customer-facing effect is executed. HOLD applies when required actors have not yet been asked or have not yet responded, and the authorization window has not expired.",
+        "REJECT": "Authorization is terminally incomplete or authority is invalid. REJECT applies when: (a) required actor authority cannot be confirmed or has been revoked; (b) required evidence is permanently unresolvable; or (c) the authorization window has expired. Discard the candidate action and log the rejection."
+      },
+      "condition_for_rejection": "Reject if: (a) authority cannot be confirmed or has been revoked (terminal); or (b) evidence is permanently unresolvable; or (c) the authorization window has expired. Pending-incomplete conditions are HOLD, not REJECT.",
+      "hold_reject_precedence": "When conditions are incomplete, apply HOLD if the incompleteness is remediable and the authorization window is open. Apply REJECT only when the incompleteness is terminal or authority is invalid."
+    },
+    "provenance": {
+      "candidate_state_must_be_preserved": true,
+      "adopted_state_requires_receipt": true,
+      "receipt_format": "TrustLedger — SHA-256 hash of adopted action, anchored to external timestamp, linked to authorization event and policy reference",
+      "rollback_trigger": "If authorization is later found to be unauthorized or the underlying policy rule is superseded, the adopted action must be flagged and the customer record queued for remediation review"
+    }
+  },
+  "severity": "high",
+  "posture_score_weight": 0.12,
+  "attestation_metadata": {
+    "last_attested": null,
+    "attested_by": null,
+    "evidence_file_ids": [],
+    "posture_contribution": "12% of overall AI governance posture score for retail domain"
+  }
+}

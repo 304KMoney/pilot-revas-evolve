@@ -1,0 +1,74 @@
+{
+  "control_id": "TELECOM_AI_OUTPUT_001",
+  "version": "1.0.0",
+  "domain": "telecom",
+  "framework_mappings": [
+    {
+      "framework": "NIST_AI_RMF",
+      "reference": "GOVERN-1.1",
+      "requirement": "Policies for AI risk management established and communicated"
+    },
+    {
+      "framework": "NIST_AI_RMF",
+      "reference": "MANAGE-2.2",
+      "requirement": "Mechanisms to sustain deployed AI system oversight are in place"
+    },
+    {
+      "framework": "ISO_42001",
+      "reference": "6.1.2",
+      "requirement": "AI risk assessment — identify risks to individuals from AI system outputs"
+    },
+    {
+      "framework": "CPNI_RULES",
+      "reference": "47 CFR Part 64",
+      "requirement": "Customer Proprietary Network Information — AI systems must not use or disclose CPNI without authorization"
+    },
+    {
+      "framework": "FCC_AI_GUIDANCE",
+      "reference": "2024 AI Framework",
+      "requirement": "AI-generated customer communications affecting service or billing must be authorized and auditable"
+    }
+  ],
+  "constraint": {
+    "description": "AI-generated outputs that affect telecom customer accounts (service changes, billing adjustments, plan modifications, network access changes, CPNI-touching actions) must not be executed without human review authorization when the action exceeds defined risk thresholds or involves regulated data.",
+    "scope": "Any AI agent output in a telecom domain that would result in: plan upgrade or downgrade, service suspension or restoration, billing credit or adjustment, CPNI-touching account lookup or disclosure, SIM swap or port-out action, or contract modification.",
+    "authority_requirements": [
+      "Authorizing actor must hold a verified agent-level authorization for the affected account type",
+      "CPNI-touching actions require additional CPNI authorization confirmation per 47 CFR Part 64",
+      "SIM swap, port-out, and account transfer actions require dual authorization regardless of account tier",
+      "Actions flagged for fraud risk require escalation to a fraud-authorized supervisor"
+    ],
+    "evidence_requirements": [
+      "AI model version and output hash must be recorded before authorization is requested",
+      "The specific policy rule or knowledge base entry consulted by the agent must be logged",
+      "For CPNI-touching actions: the CPNI authorization method and confirmation code must be logged",
+      "Authorization event must be logged with actor identity, action taken, timestamp, and reason code",
+      "Customer-facing output must be traceable to the authorized agent action"
+    ],
+    "adoption_gate": {
+      "default": "HOLD — AI-generated action is a candidate state until authorization is complete",
+      "condition_for_adoption": "All authority_requirements and evidence_requirements satisfied; action is within the authorized actor's scope; CPNI requirements satisfied if applicable",
+      "condition_for_escalation": "SIM swap, port-out, fraud-flagged, or CPNI-touching actions require elevated authorization tier",
+      "hold_reject_semantics": {
+        "HOLD": "Authorization is pending but remediable. The candidate action is preserved. No customer-facing effect is executed. HOLD applies when required actors have not yet been asked or have not yet responded, and the authorization window has not expired.",
+        "REJECT": "Authorization is terminally incomplete or authority is invalid. REJECT applies when: (a) required actor authority cannot be confirmed or has been revoked; (b) CPNI authorization cannot be confirmed; (c) required evidence is permanently unresolvable; or (d) the authorization window has expired. Discard the candidate action and log the rejection."
+      },
+      "condition_for_rejection": "Reject if: (a) authority cannot be confirmed or has been revoked (terminal); (b) CPNI authorization cannot be confirmed; (c) evidence is permanently unresolvable; or (d) the authorization window has expired. Pending-incomplete conditions are HOLD, not REJECT.",
+      "hold_reject_precedence": "When conditions are incomplete, apply HOLD if the incompleteness is remediable and the authorization window is open. Apply REJECT only when the incompleteness is terminal or authority is invalid."
+    },
+    "provenance": {
+      "candidate_state_must_be_preserved": true,
+      "adopted_state_requires_receipt": true,
+      "receipt_format": "TrustLedger — SHA-256 hash of adopted action, anchored to external timestamp, linked to authorization event, policy reference, and CPNI confirmation if applicable",
+      "rollback_trigger": "If authorization is later found to be unauthorized or CPNI rules were violated, the adopted action must be flagged, the customer notified per regulatory requirements, and the record queued for compliance review"
+    }
+  },
+  "severity": "high",
+  "posture_score_weight": 0.13,
+  "attestation_metadata": {
+    "last_attested": null,
+    "attested_by": null,
+    "evidence_file_ids": [],
+    "posture_contribution": "13% of overall AI governance posture score for telecom domain"
+  }
+}

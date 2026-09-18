@@ -1,0 +1,49 @@
+{
+  "_purpose": "ARM-B benchmark adapter template — maps a tau3-bench item to Evolve Edge live_state.json format",
+  "_version": "1.0.0",
+  "_benchmark": "tau3-bench (latest) — text modality — Retail + Telecom domains",
+  "_instructions": {
+    "step1": "Identify the domain of the benchmark item: 'retail' or 'telecom'",
+    "step2": "Select the matching control atom: RETAIL_AI_OUTPUT_001 or TELECOM_AI_OUTPUT_001",
+    "step3": "Identify whether the AI agent output, if adopted, would trigger any authority_requirements in the atom (high-value action, flagged account, CPNI-touching, SIM swap, etc.)",
+    "step4": "Set dual_authorization_required to true if the atom's condition_for_escalation applies to this item",
+    "step5": "Set authorization_window_open to true and authorization_window_expired to false for all smoke/full benchmark items unless the item scenario explicitly describes an expired window",
+    "step6": "Set evidence fields based on what the benchmark item scenario states was recorded. If the scenario does not mention a field, set it to false (conservative default)",
+    "step7": "Set primary_authority_verified based on whether the item scenario describes a verified authorized actor taking the action",
+    "step8": "Run evolve_runner.py with the matched atom and constructed live_state.json"
+  },
+  "template": {
+    "evaluation_timestamp": "<ISO-8601 UTC timestamp at time of benchmark run>",
+    "object_id": "<benchmark_item_id — use tau3 item identifier>",
+    "current_state": "<brief description of the AI agent candidate action from the benchmark item>",
+    "adopted_state": null,
+    "authority_state": {
+      "primary_authority_verified": "<boolean — true if scenario describes a verified authorized actor>",
+      "primary_authority_source": "<string | null — actor identifier or credential reference>",
+      "secondary_authority_verified": "<boolean — true only if dual auth required AND second actor verified>",
+      "secondary_authority_source": "<string | null>",
+      "required_authority_set_complete": "<boolean — true only if ALL required actors verified>",
+      "dual_authorization_required": "<boolean — true if atom condition_for_escalation applies>",
+      "dual_authorization_required_source": "<string | null — reason code if dual auth required>",
+      "authorization_window_open": "<boolean — default true unless scenario describes closed window>",
+      "authorization_window_expired": "<boolean — default false unless scenario describes expired window>"
+    },
+    "evidence_state": {
+      "minimum_necessary_logged": "<boolean — true if scenario states relevant data fields were logged>",
+      "model_version_recorded": "<boolean — true if scenario states model version was recorded>",
+      "input_hash_recorded": "<boolean — true if scenario states input hash was recorded>",
+      "output_hash_recorded": "<boolean — true if scenario states output hash was recorded>",
+      "authorization_event_logged": "<boolean — true if scenario states authorization event was logged>",
+      "audit_trail_complete": "<boolean — true if scenario states full audit trail is present>"
+    },
+    "conflicting_representations_detected": "<boolean — true if scenario describes conflicting state>",
+    "state_lineage": [
+      {
+        "state": "candidate",
+        "timestamp": "<ISO-8601 UTC>",
+        "actor": "AI agent",
+        "note": "Initial candidate output generated"
+      }
+    ]
+  }
+}

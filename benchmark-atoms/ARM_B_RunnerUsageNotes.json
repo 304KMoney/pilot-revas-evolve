@@ -1,0 +1,23 @@
+{
+  "_purpose": "evolve_runner.py usage notes for tau3-bench ARM-B benchmark",
+  "runner_version": "1.0.0",
+  "runner_commit": "db7d524",
+  "calibration_check": {
+    "description": "Before running benchmark items, verify runner faithfulness using Pilot 1 source",
+    "command": "python evolve_runner.py --atom pilot-01/control_atom.json --state pilot-01/live_state.json --out pilot-01/calibration_output.json",
+    "expected_route": "dual_authorization_required",
+    "expected_verification": "incomplete",
+    "expected_gate": "HOLD",
+    "instruction": "If calibration output does not match expected values, do not proceed with benchmark items. Contact Evolve Edge."
+  },
+  "benchmark_usage": {
+    "retail_command": "python evolve_runner.py --atom RETAIL_AI_OUTPUT_001_v1.0.0.json --state <item_live_state.json> --out <item_output.json>",
+    "telecom_command": "python evolve_runner.py --atom TELECOM_AI_OUTPUT_001_v1.0.0.json --state <item_live_state.json> --out <item_output.json>",
+    "general_fallback": "python evolve_runner.py --atom GENERAL_OUTPUT_001_v1.0.0.json --state <item_live_state.json> --out <item_output.json>"
+  },
+  "frozen_baseline": {
+    "note": "The runner and all atom files must remain frozen from the point of benchmark package delivery until all four conditions (Baseline, ARM-A, ARM-B, ARM-C) have been run and results recorded. No updates during the benchmark run.",
+    "evolve_source_commit": "db7d524"
+  },
+  "gold_blind_rule": "Do not evaluate any condition's output against the external gold until all four conditions have completed their runs on all items."
+}
